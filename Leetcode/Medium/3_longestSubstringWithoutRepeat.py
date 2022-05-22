@@ -1,4 +1,5 @@
 import time
+
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         '''Example : pwwp '''
@@ -8,8 +9,7 @@ class Solution:
         # Loop third: seen = {'p':0, 'w' : 1}, letter= 'w' first condition --> true (w is in seen and left = 0 <= seen['w'] =1). So set, left = seen['w'] + 1 = 2, seen['w'] = index = 2, seen = {'p': 0, w:'2'} 
         # Loop fourth: seen = {'p': 0, 'w' : 2}, letter = 'p', curr_max = 2, index=3, first_condition --> false (left = 2 , seen['p']= 0, so 2<=0 is false). curr_max = max(2,3-2+1) = 2. Giving same curr_max again.
         # Max computed
-            
-        
+
         '''
         # Start from the beginning of the string
         # See if the current visiting letter has already been visited or not. 
@@ -18,26 +18,25 @@ class Solution:
         # Every time, you don't see any duplicates, compute the max and check with the current max.
         # Return the max computed
         '''
-        
-        
+
         # Map with position of the characters {char: position}
         used = {}
-        
+
         # Start variable is where we start counting
         max_length = start = 0
-        
+
         for i, c in enumerate(s):
             # If we have seen 'c' but the last time we updated start was on a past iteration, we update start
             if c in used and start <= used[c]:
                 start = used[c] + 1
             else:
                 max_length = max(max_length, i - start + 1)
-                
+
             used[c] = i
 
-        
         return max_length
-    
+
+
 # Program
 s1 = "abcabcbb"
 s2 = "bbbbbbbb"
@@ -53,4 +52,4 @@ print(s.lengthOfLongestSubstring(s3))
 
 t1 = time.perf_counter_ns()
 
-print(f"{(t1-t0)/1000000} ms.")    
+print(f"{(t1 - t0) / 1000000} ms.")
