@@ -1,70 +1,48 @@
 import time
 from typing import List
+'''
 
+'''
 class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
-        # Find out where the middle of the total list will be
-        l1, l2 = len(nums1), len(nums2)
+        # Assuming both lists aren't empty
+        N1, N2 = len(nums1), len(nums2)
         
-        '''
-        This following call is to only take into consideration when nums1 is smaller than nums2, so we don't write double the code
-        '''
-        if (l1 > l2):
-            return self.findMedianSortedArrays(nums2, nums1)
+        if N1 > N2:
+            return self.findMedianSortedArrays(nums2, nums1)            # Make sure nums1 is the shorter one
         
         '''
         Now Binary Search
         '''
-        # we find the middle
-        middle = (l1 + l2 - 1) // 2
-        # we define pointers
-        left, right = 0, l1
+        start = 0
+        end = N1
+        midMergedArray = (N1 + N2 + 1) // 2
         
-        while left < right:
-            mid1 = (left + right) // 2
-            mid2 = middle - mid1
+        while start <= end:
+            cut = (start + end) // 2                         # Calculate the cut (done on Nums1)
+            leftSize1 = cut                                  # Left size of Nums1
+            leftSize2 = midMergedArray - leftSize1           # Left size of Nums2
             
-            if nums1[mid1] < nums2[mid2]:
-                left = mid1 + 1
+            # Get L1, R1, L2, R2
+            L1 = nums1[leftSize1-1]   if   leftSize1 > 0     else    float("-inf")
+            L2 = nums2[leftSize2-1]   if   leftSize2 > 0     else    float("-inf")
+            R1 = nums1[leftSize1]     if   leftSize1 < N1    else    float("inf")
+            R2 = nums2[leftSize2]     if   leftSize2 < N2    else    float("inf")
+            
+            if L1 > R2:
+                end = cut - 1               # Nums1's left side is too big; need to move the cut left
+            elif L2 > R1:
+                start = cut + 1             # Nums2's left side is too big; need to move the cut right (equivalent to moving a cut in Nums2 to the left)
             else:
-                right = mid1
+                # Even length of total items; the biggest of the lefts and smallest of the rights are the values around the median
+                if (N1 + N2) % 2 == 0:
+                    return (max(L1, L2) + min(R1, R2)) / 2
                 
-        '''
-        After the binary search we know the median must be between these 4 numbers:
-         - nums1[ left - 1 ]
-         - nums1[ left ]
-         - nums2[ middle - left]
-         - nums2[ middle - left + 1]
-        '''
+                # Odd length of total items; the biggest of the lefts is the median
+                return max(L1, L2)
         
-        '''
-        if (l1+l2) is odd, the median is the bigger one between:
-         - nums1[ left - 1 ]
-            and
-         - nums2[ middle - left ]
-        With some corner cases
-        '''
-        # We find which one would be the solution
-        aux1 = nums1[left - 1] if left > 0 else -1
-        aux2 = nums2[middle-left] if middle-left >= 0 else -1
-        
-        res1 = max(aux1, aux2)
+        return -1
             
-        # Return it if it's an odd length
-        if (l1+l2) % 2 == 1:
-            return res1
-        
-        
-        '''
-        if (l1+l2) is even, the median is:
-            median = (res1 + min(nums1[left], nums2[ middle - left + 1 ]) / 2
-        '''
-        # We find which is the second part we need
-        aux1 = nums1[left] if left < l1 else float("inf")
-        aux2 = nums2[middle - left + 1] if middle - left + 1 < l2 else float("inf")
-        res2 = min(aux1, aux2)
-        
-        return (res1 + res2) / 2
     
 # Program
 s1 = [1,3]
