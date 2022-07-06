@@ -6,14 +6,14 @@ class Solution:
             return s
 
         # If numRows = 3
-        # L = ['', '', '']
+        # L = [[], [], []]
         # Each one for a row
-        L = [''] * numRows
+        L = [[] for _ in range(numRows)]
         index, step = 0, 1
 
         for x in s:
             # We add the character to the specific row
-            L[index] += x
+            L[index].append(x)
             
             # If we are on index 0 (decreasing), we put positive step (increasing)
             if index == 0:
@@ -25,7 +25,7 @@ class Solution:
             index += step
 
         # We join everything into a single string
-        return ''.join(L)
+        return ''.join(''.join(row) for row in L)
                     
                     
 
