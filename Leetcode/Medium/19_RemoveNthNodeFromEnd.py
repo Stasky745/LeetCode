@@ -1,12 +1,6 @@
 # Definition for singly-linked list.
 from typing import Optional
-
-
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
+from modules.listNode import ListNode
         
 class Solution:
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
@@ -103,30 +97,10 @@ class Solution:
 
         
 
-
-def createListNode(values: Optional[int]):
-    head = ListNode(values[0], None)
-    last = head
-
-    for n in range(1, len(values)):
-        last.next = ListNode(values[n], None)
-        last = last.next
-    
-    return head
-
-def printListNode(head: Optional[ListNode]):
-    res = []
-
-    while head:
-        res.append(head.val)
-        head = head.next
-    
-    print(res)
-
 s = Solution()
 
-l = createListNode([1,2])
+l = ListNode([1,2])
 
 r = s.removeNthFromEnd2(l, 1)
 
-printListNode(r)
+r.print()
